@@ -15,7 +15,7 @@ print(mydata.head())
 print(mydata.tail())
 
 #normalization to 100
-print(mydata.iloc[0])
+print('indexing by position: ', mydata.iloc[0])
 trend = (mydata/mydata.iloc[0]*100)
 
 #plot standardized trend
@@ -29,21 +29,21 @@ mydata.plot(figsize=(16,8))
 
 #calculate a portfolio RR
 returns = (mydata/ mydata.shift(1)) -1
-print(returns.tail())
+print('last returns value:', returns.tail())
 
 #weights portfolio's stocks
 weights = np.array([0.25,0.25,0.25,0.25])
 annual_returns= returns.mean() *250
-print(annual_returns)
+print('the annual stocks return: ', annual_returns)
 
-print(np.dot(annual_returns,weights))
+print('annual return pf weighted ',np.dot(annual_returns,weights))
 portfolio = str(round(np.dot(annual_returns, weights),5)*100)+'%'
 
-print(portfolio)
+print('portfolio return: ',portfolio)
 
 #calculating single stocks risk
 sec_returns= np.log(mydata/mydata.shift(1))
-print(sec_returns)
+print('log pf return: ' , sec_returns)
 
 sec_returns['TSLA'].mean() * 250
 sec_returns['AAPL'].mean() * 250
@@ -64,24 +64,24 @@ sec_returns[['TSLA','AAPL','VGT','ORCL']].std() * 250 **0.5
 #calculating covariance and correlation between securities
 #variance of the single assetS
 TSLA_var_a= sec_returns['TSLA'].var() * 250 
-print(TSLA_var_a)
+print('TSLA var: ', TSLA_var_a)
 
 AAPL_var_a= sec_returns['AAPL'].var() * 250 
-print(AAPL_var_a)
+print('AAPL var: ', AAPL_var_a)
 
 VGT_var_a= sec_returns['VGT'].var() * 250 
-print(VGT_var_a)
+print('VGT var: ', VGT_var_a)
 
 ORCL_var_a= sec_returns['ORCL'].var() * 250 
-print(ORCL_var_a)
+print('ORCL var: ', ORCL_var_a)
 
 #calculate covar matrix(annual)
 cov_matrix_a=sec_returns.cov() * 250
-print(cov_matrix_a)
+print('pf cov matrix: ', cov_matrix_a)
 
 #calculate corr matrix
 corr_matrix= sec_returns.corr()
-print(corr_matrix)
+print('pf corr matrix: ', corr_matrix)
 
 
 
@@ -93,12 +93,12 @@ weights = np.array([0.25,0.25,0.25,0.25])
 
 #.T transposes the value in vector
 portfolio_var = (np.dot(weights.T, np.dot(sec_returns.cov() * 250, weights))) 
-print(portfolio_var)
+print('tot pf var: ', portfolio_var)
 
 portfolio_vol = (np.dot(weights.T, np.dot(sec_returns.cov() * 250, weights))) ** 0.5
-print(portfolio_vol)
+print('tot pf vol"sdv" :', portfolio_vol)
 
-print(str(round(portfolio_vol, 5)*100) +'%')
+print('pf vol rounded: ', str(round(portfolio_vol, 5)*100) +'%')
 
 # Calculating Diversifiable and Non-Diversifiable Risk of a Portfolio
 
@@ -106,12 +106,12 @@ print(str(round(portfolio_vol, 5)*100) +'%')
 
 dir_risk = portfolio_var - (weights[0]**2*TSLA_var_a) - (weights[1]**2*AAPL_var_a)- (weights[2]**2*VGT_var_a)- (weights[3]**2*ORCL_var_a)
 
-print(dir_risk)
+print('pf diversificable risk: ', dir_risk)
 
-print(str(round(dir_risk*100,3))+'%')
+print('pf rounded div risk: ', str(round(dir_risk*100,3))+'%')
 
 non_dir_risk = portfolio_var - dir_risk
 
-print(non_dir_risk)
+print('pf non div risk: ', non_dir_risk)
 
-print(str(round(non_dir_risk*100,3))+'%')
+print('rounded pf non div risk: ', str(round(non_dir_risk*100,3))+'%')
