@@ -19,7 +19,10 @@ print(mydata.iloc[0])
 trend = (mydata/mydata.iloc[0]*100)
 
 #plot standardized trend
-trend.plot(figsize = (16,8))
+pl.plot(trend)
+pl.ylabel('Stock price')
+pl.show()
+#trend.plot(figsize = (16,8))
 
 #plot normal trend
 mydata.plot(figsize=(16,8))
