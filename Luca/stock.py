@@ -115,3 +115,81 @@ non_dir_risk = portfolio_var - dir_risk
 print('pf non div risk: ', non_dir_risk)
 
 print('rounded pf non div risk: ', str(round(non_dir_risk*100,3))+'%')
+
+#Markowitz Portfolio Optimization
+
+assets = ['TSLA', 'AAPL', 'VGT', 'ORCL']
+pf_data = pd.DataFrame()
+
+for a in assets:
+    pf_data[a]= wb.DataReader(a, data_source='yahoo', start='2010-1-1')['Adj Close']
+
+#first look at the graph to see how the stocks have performed during the period
+(pf_data/pf_data.iloc[0] *100).plot(figsize=(16,8))
+
+#calculating general features-> mean, var, corr
+log_returns = np.log(pf_data / pf_data.shift(1))
+
+log_returns.mean() *250
+
+log_returns.cov() *250
+
+log_returns.corr()
+
+#counting the number of assets in pf
+num_assets = len(assets)
+
+print('number of assets in pf', num_assets)
+
+#generate random pf weights
+weights_m = np.random.random(num_assets)
+#sum of these random number must be equal to 1(sum of pf assets)
+#in other words (w1/(w1+w2)+(w2/(w1+w2)
+weights_m /= np.sum(weights_m)
+print('random generated pf weights', weights_m)
+
+#expected portfolio return
+np.sum(weights_m*log_returns.mean()) *250
+
+#expected portfolio variance
+np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m))
+
+print('rounded var',str(round(np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m))*100))+'%')
+
+#expected portfolio volatility
+
+print('rounded pd volat',str(round(np.sqrt(np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m)))*100)) +'%')
+
+#simulating 1000 portfolio combination with the assets taken into account
+#create an empty list and fill it up with randomical pf generation
+
+#generate two rdm weights 
+pf_returns= []
+pf_vol= []
+for x in range(1000):
+    weights_m = np.random.random(num_assets)
+    weights_m /= np.sum(weights_m)
+#append add the new random generate pf to the list pf 
+    pf_returns.append(np.sum(weights_m*log_returns.mean()) *250)
+    pf_vol.append(np.sqrt(np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m))))
+#generate 1000 random return and vol
+
+pf_returns = np.array(pf_returns)
+
+print('random 1000pf return',pf_returns)
+
+pf_vol = np.array(pf_vol)
+
+print('random 1000 pf vol',pf_vol)
+
+#create a dataframe containings two features
+portfolios = pd.DataFrame({'Return': pf_returns, 'Volatility': pf_vol})
+
+#quick check
+portfolios.head()
+
+portfolios.tail()
+
+#plot efficient frontier
+portfolios.plot(x='Volatility', y='Return', kind='scatter', figsize=(10,6));
+plt.show()
