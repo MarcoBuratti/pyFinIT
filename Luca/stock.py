@@ -10,9 +10,9 @@ for t in tickers:
 print(mydata)
 
 #ordinary check
-print(mydata.info())
-print(mydata.head())
-print(mydata.tail())
+#print(mydata.info())
+#print(mydata.head())
+#print(mydata.tail())
 
 #normalization to 100
 print('indexing by position: ', mydata.iloc[0])
@@ -20,23 +20,26 @@ trend = (mydata/mydata.iloc[0]*100)
 
 #plot standardized trend
 pl.plot(trend)
-pl.ylabel('Stock price')
+pl.ylabel('Standardize Stock Price')
 pl.show()
 #trend.plot(figsize = (16,8))
 
 #plot normal trend
 mydata.plot(figsize=(16,8))
+pl.plot(mydata)
+pl.ylabel('Stock Price')
+pl.show()
 
 #calculate a portfolio RR
-returns = (mydata/ mydata.shift(1)) -1
-print('last returns value:', returns.tail())
+returns = (mydata/ mydata.shift(1)) - 1
+#print('last returns value:', returns.tail())
 
 #weights portfolio's stocks
 weights = np.array([0.25,0.25,0.25,0.25])
-annual_returns= returns.mean() *250
-print('the annual stocks return: ', annual_returns)
+annual_returns= returns.mean() * 250
+#print('the annual stocks return: ', annual_returns)
 
-print('annual return pf weighted ',np.dot(annual_returns,weights))
+#print('annual return pf weighted ',np.dot(annual_returns,weights))
 portfolio = str(round(np.dot(annual_returns, weights),5)*100)+'%'
 
 print('portfolio return: ',portfolio)
@@ -191,5 +194,10 @@ portfolios.head()
 portfolios.tail()
 
 #plot efficient frontier
+<<<<<<< HEAD
 portfolios.plot(x='Volatility', y='Return', kind='scatter', figsize=(10,6));
 plt.show()
+=======
+#pl.plot(x=portfolios['Volatility'], y=portfolios['Return'], kind='scatter', figsize=(10,6)
+#pl.show() 
+>>>>>>> 280838b5d11f88d7730d9c654a0139df453c0fe1
