@@ -55,7 +55,7 @@ def main():
                 elif get_message_text() == 'Analysis':
                     analysisKeyboard(bot, get_chat_id())   
                 elif get_message_text() == 'Recap':
-                    bot.sendPhoto(get_chat_id(), photo=open('../Marco/stock.png', 'rb'))  
+                    bot.sendPhoto(get_chat_id(), photo=open('../img/stock.png', 'rb'))  
                 update_id += 1
     except KeyboardInterrupt:
         pass
