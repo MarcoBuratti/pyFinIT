@@ -194,10 +194,5 @@ portfolios.head()
 portfolios.tail()
 
 #plot efficient frontier
-<<<<<<< HEAD
-portfolios.plot(x='Volatility', y='Return', kind='scatter', figsize=(10,6));
-plt.show()
-=======
 #pl.plot(x=portfolios['Volatility'], y=portfolios['Return'], kind='scatter', figsize=(10,6)
 #pl.show() 
->>>>>>> 280838b5d11f88d7730d9c654a0139df453c0fe1
