@@ -1,9 +1,9 @@
 from pandas_datareader import data as wb
 import pandas as pd
-from matplotlib import pyplot as pl
+#from matplotlib import pyplot as pl
 import numpy as np
 
-from Stock_Functions import pf_return, weigthedReturn, portfolio, pfRisk
+from Stock_Functions import pf_return, weigthedReturn, portfolio, pfRisk, pfCov, returns, pfCorr
 
 # Selezione dei ticker da mettere su file JSON
 tickers = ['TSLA', 'AAPL', 'VGT', 'ORCL']
@@ -25,11 +25,11 @@ mydata = portfolio(tickers)
 #trend.plot(figsize = (16,8))
 
 # Plot normal trend
-def recap(mydata):
-    mydata.plot(figsize=(16,8))
-    pl.plot(mydata)
-    pl.ylabel('Stock Price')
-    pl.savefig('../img/recap.png')
+#def recap(mydata):
+    #mydata.plot(figsize=(16,8))
+    #pl.plot(mydata)
+    #pl.ylabel('Stock Price')
+    #pl.savefig('../img/recap.png')
 
 
 # Pesi delle singole azioni, ritorno annuale, ritorno annuale pesato e volatilità
@@ -38,37 +38,15 @@ annual_returns = pf_return(mydata)
 annualReturnW = weigthedReturn(annual_returns, weights)
 volatility = pfRisk(annual_returns, tickers)
 
+#print(pfCov(annual_returns,tickers))
 
-"""
-#calculating covariance and correlation between securities
-#variance of the single assetS
-TSLA_var_a= sec_returns['TSLA'].var() * 250 
-#print('TSLA var: ', TSLA_var_a)
+pfCovMatrix = pfCov(mydata)
 
-AAPL_var_a= sec_returns['AAPL'].var() * 250 
-#print('AAPL var: ', AAPL_var_a)
-
-VGT_var_a= sec_returns['VGT'].var() * 250 
-#print('VGT var: ', VGT_var_a)
-
-ORCL_var_a= sec_returns['ORCL'].var() * 250 
-#print('ORCL var: ', ORCL_var_a)
-
-#calculate covar matrix(annual)
-cov_matrix_a=sec_returns.cov() * 250
-#print('pf cov matrix: ', cov_matrix_a)
-
-#calculate corr matrix
-corr_matrix= sec_returns.corr()
-#print('pf corr matrix: ', corr_matrix)
+pfCorrMatrix = pfCorr(mydata)
+ 
+'''
 
 
-
-#calculating portfolio risk
-
-weights = np.array([0.25,0.25,0.25,0.25])
-
-#portfolio variance
 
 #.T transposes the value in vector
 portfolio_var = (np.dot(weights.T, np.dot(sec_returns.cov() * 250, weights))) 
@@ -95,6 +73,10 @@ non_dir_risk = portfolio_var - dir_risk
 
 #print('rounded pf non div risk: ', str(round(non_dir_risk*100,3))+'%')
 
+
+
+
+
 #Markowitz Portfolio Optimization
 
 assets = ['TSLA', 'AAPL', 'VGT', 'ORCL']
@@ -103,8 +85,7 @@ pf_data = pd.DataFrame()
 for a in assets:
     pf_data[a]= wb.DataReader(a, data_source='yahoo', start='2010-1-1')['Adj Close']
 
-#first look at the graph to see how the stocks have performed during the period
-(pf_data/pf_data.iloc[0] *100).plot(figsize=(16,8))
+
 
 #calculating general features-> mean, var, corr
 log_returns = np.log(pf_data / pf_data.shift(1))
@@ -121,9 +102,10 @@ num_assets = len(assets)
 #print('number of assets in pf', num_assets)
 
 #generate random pf weights
-weights_m = np.random.random(num_assets)
 #sum of these random number must be equal to 1(sum of pf assets)
 #in other words (w1/(w1+w2)+(w2/(w1+w2)
+
+weights_m = np.random.random(num_assets)
 weights_m /= np.sum(weights_m)
 #print('random generated pf weights', weights_m)
 
@@ -143,12 +125,15 @@ np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m))
 #create an empty list and fill it up with randomical pf generation
 
 #generate two rdm weights 
+#append add the new random generate pf to the list pf 
+
 pf_returns= []
 pf_vol= []
+weig_list = []
 for x in range(1000):
     weights_m = np.random.random(num_assets)
     weights_m /= np.sum(weights_m)
-#append add the new random generate pf to the list pf 
+    weig_list.append(weights_m)
     pf_returns.append(np.sum(weights_m*log_returns.mean()) *250)
     pf_vol.append(np.sqrt(np.dot(weights_m.T,np.dot(log_returns.cov() *250, weights_m))))
 #generate 1000 random return and vol
@@ -172,5 +157,22 @@ portfolios.tail()
 #plot efficient frontier
 #pl.plot(x=portfolios['Volatility'], y=portfolios['Return'], kind='scatter', figsize=(10,6)
 #pl.show() 
+#display(portfolios.iloc[97])
 
-"""
+
+#def funzione ed estrazione del pf con return massimo e vol  minima
+def bestMarkPf(portfolios):
+    maxRet = portfolios['Return'].argmax()
+    minVol = portfolios['Volatility'].argmin()
+    return maxRet, minVol
+
+
+maxReturnPf,minVolatilityPf = bestMarkPf(portfolios)
+
+portfolios.iloc[maxReturnPf]
+
+portfolios.iloc[minVolatilityPf]
+
+
+
+'''
