@@ -2,7 +2,7 @@ import json
 import sys, time
 import telegram
 from telegram import ReplyKeyboardMarkup, KeyboardButton, InputFile
-from keyboard import firstKeyboard, analysisKeyboard, backKeyboard
+from keyboard import firstKeyboard, analysisKeyboard, sendImage, send_message
 
 TOKEN = '1406935640:AAE3-CXn5zEgvB-xdBQw67zA2bo7r0TGCDE'
 
@@ -29,18 +29,6 @@ def get_message_text():
     message_text = response[last]['message']['text']
     return message_text    
 
-
-# Send message from serverbot to chat
-def send_message(chat_id, message_text):
-    bot.sendMessage(chat_id, message_text)
-
-# Send keyboard to user
-def send_keyboard():
-    btn1 = KeyboardButton(text = 'AMZN')
-    btn2 = KeyboardButton(text = 'AAPL')
-    keyboard = [[btn1, btn2]]
-    bot.sendMessage(get_chat_id(), text = 'Stocks', reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard = True))
-
 def main():
     update_id = last_update() + 1
     try:
@@ -48,14 +36,14 @@ def main():
             #time.sleep(3)
             update = last_update()
             if update_id == update:
-                if get_message_text() == '/start':
-                    firstKeyboard(bot, get_chat_id())
-                elif get_message_text() == 'Back':
-                    backKeyboard(bot, get_chat_id())     
+                if get_message_text() == '/start' or get_message_text() == '/back':
+                    firstKeyboard(bot, get_chat_id())  
                 elif get_message_text() == 'Analysis':
                     analysisKeyboard(bot, get_chat_id())   
                 elif get_message_text() == 'Recap':
-                    bot.sendPhoto(get_chat_id(), photo=open('../img/stock.png', 'rb'))  
+                      sendImage(bot, get_chat_id())
+                else:
+                    send_message(bot, get_chat_id(), get_message_text())
                 update_id += 1
     except KeyboardInterrupt:
         pass
