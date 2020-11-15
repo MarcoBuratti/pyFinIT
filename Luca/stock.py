@@ -32,12 +32,10 @@ pfCovMatrix = pfCov(mydata)
 pfCorrMatrix = pfCorr(mydata)
  
 
-#single stock variance
-def sing_var(tickers):
-    return returns(mydata).std() * 250
-    
 
-print(sing_var(mydata['AAPL'])
+
+
+
 
 
 # Calculating Diversifiable and Non-Diversifiable Risk of a Portfolio
@@ -45,9 +43,10 @@ print(sing_var(mydata['AAPL'])
 
 #diversifiable risk = port_var - weighted annual variances
 
-#dir_risk = (print(volatility) - (weights[0]**2*TSLA_var_a) - (weights[1]**2*AAPL_var_a)- (weights[2]**2*VGT_var_a)- (weights[3]**2*ORCL_var_a)
+#dir_risk = (print(volatility) - (weights[0]**2*sing_var('TSLA')) - (weights[1]**2*sing_var('AAPL'))- (weights[2]**2*sing_var('VGT')) - (weights[3]**2*sing_var('ORCL'))
 
-#print('pf diversificable risk: ', dir_risk)
+
+#print( dir_risk)
 
 #print('pf rounded div risk: ', str(round(dir_risk*100,3))+'%')
 
@@ -73,11 +72,14 @@ print(sing_var(mydata['AAPL'])
 
 #generate a for loop which gives back 1000 pf weights
 #sum of these random number must be equal to 1(sum of pf assets)
-#in other words (w1/(w1+w2)+(w2/(w1+w2)
+#w /= sum.(w) is equivalent to w = w / sum.(w)->w1/(w1+w2) + w2/(w1+w2..) + wn/(sum.wn)=1
+
 
 #pf_returns= []
 #pf_vol= []
 #weig_list = []
+
+
 
 #for x in range(1000):
  #   weights_m = np.random.random(num_assets)
@@ -128,3 +130,5 @@ print(sing_var(mydata['AAPL'])
 #print high risk adversion pf
 
 #print('min return-risk pf',portfolios.iloc[maxReturnPf])
+
+
