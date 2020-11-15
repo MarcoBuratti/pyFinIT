@@ -13,8 +13,7 @@ def firstKeyboard(bot, chat_id):
 def analysisKeyboard(bot, chat_id):
     btn1 = KeyboardButton(text = 'Markovitz')
     btn2 = KeyboardButton(text = 'CAPM')
-    btn3 = KeyboardButton(text = 'Non capisco')
-    keyboard = [[btn1, btn2, btn3]]
+    keyboard = [[btn1, btn2]]
     send_keyboard(bot, keyboard, chat_id, '<strong>Portfolio Analysis</strong>')        
 
 """

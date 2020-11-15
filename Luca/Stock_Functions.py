@@ -1,6 +1,7 @@
 from pandas_datareader import data as wb
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot as plt
 
 # Select data from database
 def portfolio(tickers):
@@ -38,3 +39,12 @@ def pfCov(mydata):
 def pfCorr(mydata):
     return returns(mydata).corr() 
 
+# Plot trend
+def recap(mydata):
+    mydata.plot(figsize=(16,8))
+    plt.plot(mydata)
+    plt.ylabel('Stock Price')
+    plt.savefig('../img/recap.png')
+
+def returnsLog(mydata):
+    return np.log(mydata / mydata.shift(1))

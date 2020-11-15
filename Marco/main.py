@@ -24,7 +24,6 @@ def main():
         last_update()
         update_id = handler.getUpdateId() + 1
         while True:
-            time.sleep(0.2)
             update = handler.getUpdateId()
             if  update == update_id:
                 if handler.getMessage() == '/start':
@@ -39,6 +38,7 @@ def main():
                 else:
                     send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1
+            time.sleep(0.2)
             last_update()
     except KeyboardInterrupt:
         pass
