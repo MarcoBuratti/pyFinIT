@@ -1,50 +1,45 @@
-import json
 import sys, time
 import telegram
 from telegram import ReplyKeyboardMarkup, KeyboardButton, InputFile
-from keyboard import firstKeyboard, analysisKeyboard, sendImage, send_message
 
-TOKEN = '1406935640:AAE3-CXn5zEgvB-xdBQw67zA2bo7r0TGCDE'
+from keyboard import *
+from message import Message
 
+handler = Message()
+token = open("../config/token.txt", "r")
+TOKEN = token.read()
 bot = telegram.Bot(TOKEN)
+f = open("../config/welcome.txt", "r")
+welcome = f.read()
 
-# Return last update_id
+# Push into que last update recived from user
 def last_update():
     response = bot.getUpdates()
     last = len(response) - 1
-    #print(response[last]['update_id'])
-    return response[last]['update_id']
-
-# Return the chat id
-def get_chat_id():
-    response = bot.getUpdates()
-    last = len(response) - 1
-    chat_id = response[last]['message']['chat']['id']
-    return chat_id
-
-# Return the message send by the client
-def get_message_text():
-    response = bot.getUpdates()
-    last = len(response) - 1
-    message_text = response[last]['message']['text']
-    return message_text    
+    handler.setMessage(response[last])
 
 def main():
-    update_id = last_update() + 1
+    #update_id = last_update() + 1
     try:
+        last_update()
+        update_id = handler.getUpdateId() + 1
         while True:
-            #time.sleep(3)
-            update = last_update()
-            if update_id == update:
-                if get_message_text() == '/start' or get_message_text() == '/back':
-                    firstKeyboard(bot, get_chat_id())  
-                elif get_message_text() == 'Analysis':
-                    analysisKeyboard(bot, get_chat_id())   
-                elif get_message_text() == 'Recap':
-                      sendImage(bot, get_chat_id())
+            time.sleep(0.2)
+            update = handler.getUpdateId()
+            if  update == update_id:
+                if handler.getMessage() == '/start':
+                    send_message(bot, handler.getChatId(), welcome)
+                    firstKeyboard(bot, handler.getChatId())
+                elif handler.getMessage() == '/back':
+                    firstKeyboard(bot, handler.getChatId())  
+                elif handler.getMessage() == 'Analysis':
+                    analysisKeyboard(bot, handler.getChatId())   
+                elif handler.getMessage() == 'Recap':
+                    sendImage(bot, handler.getChatId())
                 else:
-                    send_message(bot, get_chat_id(), get_message_text())
+                    send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1
+            last_update()
     except KeyboardInterrupt:
         pass
     

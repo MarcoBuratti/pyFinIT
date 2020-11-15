@@ -3,7 +3,6 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 ##### Class in which we manage the user's keyboard
 
-
 def firstKeyboard(bot, chat_id):
     btn1 = KeyboardButton(text = 'Recap')
     btn2 = KeyboardButton(text = 'Analysis')
@@ -36,4 +35,4 @@ def send_keyboard(bot, keyboard, chat_id, text_message):
     bot.sendMessage(chat_id, text = text_message, parse_mode='HTML', reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard = True))
 
 def send_message(bot, chat_id, text_message):
-    bot.sendMessage(chat_id, text = text_message)
+    bot.sendMessage(chat_id, text = text_message, parse_mode='HTML')
