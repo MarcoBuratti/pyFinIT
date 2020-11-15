@@ -6,7 +6,7 @@ import numpy as np
 def portfolio(tickers):
     mydata = pd.DataFrame()
     for t in tickers:
-        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2010-1-1')['Adj Close']
+        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2015-1-1')['Adj Close']
     return mydata    
     
 #calculate a portfolio annual return
