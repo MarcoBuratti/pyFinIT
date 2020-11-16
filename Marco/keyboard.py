@@ -1,6 +1,10 @@
 import telegram
+import sys
+sys.path.insert(1, '../Luca')
+from stock import Stock
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
+stock = Stock()
 ##### Class in which we manage the user's keyboard
 
 def firstKeyboard(bot, chat_id):
@@ -9,6 +13,7 @@ def firstKeyboard(bot, chat_id):
     btn3 = KeyboardButton(text = 'Forecast')
     keyboard = [[btn1, btn2, btn3]]
     send_keyboard(bot, keyboard, chat_id, '<strong>Menu</strong>')
+    stock.initData()
 
 def analysisKeyboard(bot, chat_id):
     btn1 = KeyboardButton(text = 'Markovitz')
@@ -16,15 +21,10 @@ def analysisKeyboard(bot, chat_id):
     keyboard = [[btn1, btn2]]
     send_keyboard(bot, keyboard, chat_id, '<strong>Portfolio Analysis</strong>')        
 
-"""
-def sendShortCut(bot):
-    cmd1 = BotCommand(command='/start', description='Start the Bot')
-    cmd2 = BotCommand(command='/help', description='Ask for help to the Bot')
-    cmd3 = BotCommand(command='/exit', description='Reset the Keyboard')
-    cmd4 = BotCommand(command='/back', description='Back to the starting keyboard')
-    command = [[cmd1, cmd2, cmd3, cmd4]]
-    bot.setMyCommands(command)
-"""
+def sendRecap(bot, chat_id):
+    annual_returns, annualReturnW, volatility = recapKey()
+    send_message(bot, chat_id, str(annual_returns) + '\n' + str(annualReturnW) + '\n' + str(volatility))
+    #+ annualReturnW + volatility
 
 def sendImage(bot, chat_id):
     bot.sendPhoto(chat_id, photo=open('../img/stock.png', 'rb'))

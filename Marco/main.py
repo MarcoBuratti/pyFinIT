@@ -34,6 +34,7 @@ def main():
                 elif handler.getMessage() == 'Analysis':
                     analysisKeyboard(bot, handler.getChatId())   
                 elif handler.getMessage() == 'Recap':
+                    sendRecap(bot, handler.getChatId())
                     sendImage(bot, handler.getChatId())
                 else:
                     send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
