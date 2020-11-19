@@ -47,6 +47,21 @@ def recap(x, y):
     plt.xlabel('Days')
     plt.savefig('../img/recap.png')
 
+def stockRecap(mydata):
+    mydata.plot(figsize=(16,8))
+    plt.plot(mydata)
+    plt.ylabel('Stock prices')
+    plt.xlabel('Days')
+    plt.savefig('../img/stockRecap.png')
+
+def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet):
+    portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
+    plt.scatter( x = pfpuntoMaxRet['Volatility'], y = pfpuntoMaxRet['Return'], c = 'r')
+    plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
+    plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
+    plt.savefig('../img/frontier.png')
+
+
 def returnsLog(mydata):
     return np.log(mydata / mydata.shift(1))
 

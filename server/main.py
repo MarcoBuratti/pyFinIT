@@ -36,6 +36,9 @@ def main():
                 elif handler.getMessage() == 'Recap':
                     sendImage(bot, handler.getChatId(), 'recap.png')
                     sendRecap(bot, handler.getChatId())
+                elif handler.getMessage() == 'Markowitz':
+                    sendImage(bot, handler.getChatId(), 'frontier.png')
+                    sendMarkowitz(bot, handler.getChatId())   
                 else:
                     send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1

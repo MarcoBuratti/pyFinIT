@@ -16,20 +16,27 @@ def firstKeyboard(bot, chat_id):
     stock.initData()
 
 def analysisKeyboard(bot, chat_id):
-    btn1 = KeyboardButton(text = 'Markovitz')
+    btn1 = KeyboardButton(text = 'Markowitz')
     btn2 = KeyboardButton(text = 'CAPM')
     keyboard = [[btn1, btn2]]
     send_keyboard(bot, keyboard, chat_id, '<strong>Portfolio Analysis</strong>')        
 
 def sendRecap(bot, chat_id):
     annual_returns, annualReturnW, volatility, tickers = stock.recapKey()
-    send_message(bot, chat_id, 'The annual return of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' \
-        + 'The volatility of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n')
     message = ''
     for i in range(len(annual_returns)):
-        message += ('The single annual return of the stock ' + tickers[i] + ' is ' +\
+        message += ('The single annual return of the stock ' + tickers[i] + ' is ' + \
              str( round(annual_returns.get(i)*100, 2) ) + '%\n' )
     send_message(bot, chat_id, message)
+    sendImage(bot, chat_id, 'stockRecap.png')
+    send_message(bot, chat_id, 'The annual return of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' \
+        + 'The volatility of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n')
+    
+def sendMarkowitz(bot, chat_id):
+    pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet = stock.markovitz()
+    print(pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet)
+
+
 
 def sendImage(bot, chat_id, img):
     image = '../img/' + img

@@ -19,67 +19,62 @@ import pandas as pd
 from pandas_datareader import data as wb
 import matplotlib.pyplot as plt
 from scipy.stats import norm
-get_ipython().run_line_magic('matplotlib', 'inline')
+from IPython import get_ipython
+from Stock_Functions import *
+#get_ipython().run_line_magic('matplotlib', 'inline')
+
 
 
 
 
 #Import data
-ticker = "PG"
-data = pd.DataFrame()
-data[ticker] = wb.DataReader(ticker, data_source = "yahoo", start = "2007-1-1")["Adj Close"]
+ticker = ['TSLA', 'AAPL', 'VGT', 'AMZN']
+mydata = pd.DataFrame()
+mydata[ticker] = wb.DataReader(ticker, data_source = "yahoo", start = "2015-1-1")["Adj Close"]
 
 
 
+daily = (mydata/ mydata.shift(1)).mean(axis = 1) - 1
+#print(daily)
+log_returns = np.log( 1 + daily)
 
-#Calculate log returns
-log_returns = np.log(1 + data.pct_change())
+lenght = daily.size
+new_list=[] 
+j=0
+for i in range(1, lenght):
+    j+=daily.iloc[i]
+    new_list.append(j)
 
-
-
-
-#Check
-log_returns.tail()
-
-
-
-
-#Plot prices
-data.plot(figsize=(10, 6))
-
+dailyPortfolio = [10000 + (x * 10000) for x in new_list]
 
 
 
 #Plot of log return (data normally distributed)
-log_returns.plot(figsize=(10, 6))
+#log_returns.plot(figsize=(10, 6))
 
 
 
 
 #Compute the mean of log returns
 u = log_returns.mean()
-print(u)
+print('media ', round(u, 3))
 
 
 
 
-#Compute the mean of log returns
+#Compute the var of log returns
 var = log_returns.var()
-print(var)
-
-
+print('varianza ', round(var, 5))
 
 
 #Compute the drift component
 drift = u - (0.5 * var)
-print(drift)
-
-
+print('drift ', round(drift, 5) )
 
 
 #Compute st dev
 stdev = log_returns.std()
-print(stdev)
+print('standard dev ', round(stdev, 5) )
 
 
 
@@ -90,20 +85,13 @@ print(stdev)
 
 
 #Check if drift is a pandas series
-type(drift)
+l = pd.Series(drift)
+drift = l
+drVal = drift.values
 
-
-
-
-#Check if drift is a pandas series
-type(stdev)
-
-
-
-
-#Convert value into a np array
-drift.values
-stdev.values
+l = pd.Series(stdev)
+stdev = l
+stdVal = stdev.values
 
 
 
@@ -115,7 +103,7 @@ stdev.values
 
 
 #Norm distribution function with 95%
-norm.ppf(0.95)
+print(norm.ppf(0.95))
 
 
 
@@ -143,13 +131,13 @@ print(Z)
 
 
 #Number of upcoming days for which we make forecasts
-t_intervals = 1000
+t_intervals = 1850
 
 
 
 
 #Number of iterations of series stock price predictions
-iterations = 10
+iterations = 5
 
 
 
@@ -163,7 +151,7 @@ print(daily_returns)
 
 #We need to create a price list
 #Each price must be equal to: St = S0 * daily_return
-S0 = data.iloc[-1]
+S0 = dailyPortfolio[-1]
 print(S0)
 
 
@@ -193,4 +181,5 @@ print(price_list)
 #Plot 
 plt.figure(figsize=(10, 6))
 plt.plot(price_list)
+plt.show()
 

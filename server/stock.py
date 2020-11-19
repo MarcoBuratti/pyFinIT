@@ -18,35 +18,28 @@ class Stock:
         self.weights = np.array([0.25,0.25,0.25,0.25])
         self.mydata = portfolio(self.tickers)
 
+    def getMydata(self):
+        return self.mydata
+
+    def getWeights(self):
+        return self.weights
+    
+    def getTickers(self):
+        return self.tickers
+
     # Pesi delle singole azioni, ritorno annuale, ritorno annuale pesato e volatilità
     def recapKey(self):
         annual_returns = pf_return(self.mydata)
         annualReturnW = weigthedReturn(annual_returns, self.weights)
         x, y = dailyReturn(self.mydata)
-        recap( x, y )
+        recap(x,y)
+        stockRecap(self.mydata)
         volatility = pfRisk(annual_returns, self.tickers)
         #dailyReturn(self.mydata, self.weights)
         return annual_returns, annualReturnW, volatility, self.tickers
     
-    # Calculating Diversifiable and Non-Diversifiable Risk of a Portfolio
-
-    #diversifiable risk = port_var - weighted annual variances
-
-    #dir_risk = (print(volatility) - (weights[0]**2*sing_var('TSLA')) - (weights[1]**2*sing_var('AAPL'))- (weights[2]**2*sing_var('VGT')) - (weights[3]**2*sing_var('ORCL'))
-
-    #print( dir_risk)
-
-    #print('pf rounded div risk: ', str(round(dir_risk*100,3))+'%')
-
-    #non_dir_risk = portfolio_var - dir_risk
-
-    #print('pf non div risk: ', non_dir_risk)
-
-    #print('rounded pf non div risk: ', str(round(non_dir_risk*100,3))+'%')
-
-
     #Markowitz Portfolio Optimization
-    def modifica(self):
+    def markovitz(self):
         covRetLog = pfCov(self.mydata)
         corrRetLog = pfCorr(self.mydata)
         num_assets = len(self.tickers)
@@ -64,7 +57,6 @@ class Stock:
             pf_returns.append(np.sum( weights_m * returns(self.mydata).mean() ) * 250)
             pf_vol.append(np.sqrt(np.dot( weights_m.T, np.dot( covRetLog, weights_m ))))
 
-
         weig_list = [np.round(num, 4) for num in weig_list]
         pf_returns = np.array(pf_returns)
         pf_vol = np.array(pf_vol)
@@ -72,20 +64,22 @@ class Stock:
         #create a dataframe containings three features
         portfolios = pd.DataFrame({'Return': pf_returns, 'Volatility': pf_vol, 'weig_list': weig_list})
         # Find our 3 best porfolios
-        def bestMarkPf(portfolios):
-            maxRet = portfolios['Return'].argmax()
-            minVol = portfolios['Volatility'].argmin()
-            avgRet = (portfolios['Return'].argmax()//3)
-            return maxRet, minVol, avgRet
 
-        maxReturnPf, minVolatilityPf, avgReturnPf = bestMarkPf(portfolios)  
+        maxReturnPf = portfolios['Return'].argmax()
+        minVolatilityPf = portfolios['Volatility'].argmin()
+        avgReturnPf = portfolios['Return'].argmax()//3
         pfpuntoMaxRet = portfolios.iloc[maxReturnPf]
         pfpuntoMinVol  = portfolios.iloc[minVolatilityPf]
         pfpuntoAvgRet = portfolios.iloc[avgReturnPf]
-        #print(portfolios.iloc[maxReturnPf])
         #plot efficient frontier 
-        portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
-        plt.scatter( x = pfpuntoMaxRet['Volatility'], y = pfpuntoMaxRet['Return'], c = 'r')
-        plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
-        plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
-        plt.savefig('../img/frontier.png')
+        stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet)
+
+        return  pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet
+    
+    """
+    def bestMarkPf(self, portfolios):
+        maxRet = portfolios['Return'].argmax()
+        minVol = portfolios['Volatility'].argmin()
+        avgRet = (portfolios['Return'].argmax()//3)
+        return maxRet, minVol, avgRet
+    """
