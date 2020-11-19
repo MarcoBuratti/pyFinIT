@@ -9,12 +9,12 @@ from yahoofinancials import YahooFinancials
 
 
 # Create a list of tickers and weights
-tickers = ['TSLA', 'AAPL', 'VGT', 'ORCL']
+tickers = ['ACN', 'IBM', 'AIG', 'BLK','C','TRI','VGT','^GSPC','MA']
 mydata = pd.DataFrame()
 for t in tickers:
     mydata[t]= wb.DataReader(t,data_source='yahoo', start='2015-1-1')['Adj Close']
     
-const_weights = [0.25,0.25,0.25,0.25]
+const_weights = [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
 
 
 #Calculate stocks daily return
