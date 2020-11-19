@@ -34,11 +34,12 @@ def main():
                 elif handler.getMessage() == 'Analysis':
                     analysisKeyboard(bot, handler.getChatId())   
                 elif handler.getMessage() == 'Recap':
+                    sendImage(bot, handler.getChatId(), 'recap.png')
                     sendRecap(bot, handler.getChatId())
-                    sendImage(bot, handler.getChatId())
                 else:
                     send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1
+                handler.move()
             time.sleep(0.2)
             last_update()
     except KeyboardInterrupt:
