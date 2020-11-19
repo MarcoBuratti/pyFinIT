@@ -40,11 +40,29 @@ def pfCorr(mydata):
     return returns(mydata).corr() 
 
 # Plot trend
-def recap(mydata):
-    mydata.plot(figsize=(16,8))
-    plt.plot(mydata)
-    plt.ylabel('Stock Price')
+def recap(x, y):
+    #mydata.plot(figsize=(16,8))
+    plt.plot(x, y)
+    plt.ylabel('Equity Line')
+    plt.xlabel('Days')
     plt.savefig('../img/recap.png')
 
 def returnsLog(mydata):
     return np.log(mydata / mydata.shift(1))
+
+
+#calculate a portfolio annual return
+def dailyReturn(mydata):
+    daily = (mydata/ mydata.shift(1)).mean(axis = 1) - 1
+    lenght = daily.size
+    new_list=[] 
+    day_list=[]
+    i=0
+    j=0
+    for i in range(1, lenght):
+        j+=daily.iloc[i]
+        new_list.append(j)
+        i+=1
+        day_list.append(i)
+    l = [10000 + (x * 10000) for x in new_list]
+    return day_list, l

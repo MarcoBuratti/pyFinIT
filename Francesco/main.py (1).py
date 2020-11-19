@@ -1,3 +1,4 @@
+"""
 #Import packages
 import numpy as np
 import pandas as pd
@@ -71,3 +72,4 @@ print(er)
 #Calculate the sharpe ratio of the portfolio
 Sharpe = (er - yr_10) / (sec_returns[["TSLA", "AAPL", "VGT", "ORCL"]].std() * 250**0.5 )
 print(Sharpe)
+"""

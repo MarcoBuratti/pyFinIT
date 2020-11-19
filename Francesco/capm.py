@@ -55,6 +55,7 @@ def expectedReturn(yr_10, beta):
     #print("PG Expected Return:", round(Pf_exp_ret, 5))
     Sharpe = (Pf_exp_ret - yr_10) / (pf_ret.std()*250**0.5)
     #print(Sharpe)
+    #portfolio expected return, sharpe = indice del portafoglio
     return Pf_exp_ret, Sharpe
 
 

@@ -20,11 +20,13 @@ class Stock:
 
     # Pesi delle singole azioni, ritorno annuale, ritorno annuale pesato e volatilità
     def recapKey(self):
-        recap(self.mydata)
         annual_returns = pf_return(self.mydata)
         annualReturnW = weigthedReturn(annual_returns, self.weights)
+        x, y = dailyReturn(self.mydata)
+        recap( x, y )
         volatility = pfRisk(annual_returns, self.tickers)
-        return annual_returns, annualReturnW, volatility
+        #dailyReturn(self.mydata, self.weights)
+        return annual_returns, annualReturnW, volatility, self.tickers
     
     # Calculating Diversifiable and Non-Diversifiable Risk of a Portfolio
 
