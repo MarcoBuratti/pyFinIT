@@ -28,10 +28,12 @@ from Stock_Functions import *
 
 
 #Import data
-ticker = ['TSLA', 'AAPL', 'VGT', 'AMZN']
+ticker = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EUE.MI','MA', 'BABA']
 mydata = pd.DataFrame()
-mydata[ticker] = wb.DataReader(ticker, data_source = "yahoo", start = "2015-1-1")["Adj Close"]
+#mydata[ticker] = wb.DataReader(ticker, data_source = "yahoo", start = "2020-11-19")["Adj Close"]
 
+for t in ticker:
+    mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-11-19')['Adj Close']
 
 
 daily = (mydata/ mydata.shift(1)).mean(axis = 1) - 1

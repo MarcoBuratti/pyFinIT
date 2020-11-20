@@ -9,10 +9,10 @@ from yahoofinancials import YahooFinancials
 
 
 # Create a list of tickers and weights
-tickers = ['ACN', 'IBM', 'AIG', 'BLK','C','TRI','VGT','^GSPC','MA']
+tickers = ['ACN', 'IBM', 'AIG', 'BLK','C','TRI','VGT','QQQJ','MA']
 mydata = pd.DataFrame()
 for t in tickers:
-    mydata[t]= wb.DataReader(t,data_source='yahoo', start='2015-1-1')['Adj Close']
+    mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-1-1')['Adj Close']
     
 const_weights = [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
 

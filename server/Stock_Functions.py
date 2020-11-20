@@ -2,12 +2,14 @@ from pandas_datareader import data as wb
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
+import time
 
 # Select data from database
 def portfolio(tickers):
+    print('Downloading data....')
     mydata = pd.DataFrame()
     for t in tickers:
-        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2015-1-1')['Adj Close']
+        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-11-19')['Adj Close']
     return mydata    
     
 #calculate a portfolio annual return
@@ -23,7 +25,7 @@ def returns(mydata):
     
 # Ritorna portfolio pesato
 def weigthedReturn(annual_returns, weights):
-    return round(np.dot(annual_returns, weights),4)*100
+    return round(np.dot(annual_returns, weights), 4)*100
     
 # Ritorna il rischio del portafoglio    
 def pfRisk(annual_returns, tickers):
@@ -46,6 +48,7 @@ def recap(x, y):
     plt.ylabel('Equity Line')
     plt.xlabel('Days')
     plt.savefig('../img/recap.png')
+    time.sleep(0.1)
 
 def stockRecap(mydata):
     mydata.plot(figsize=(16,8))
@@ -53,12 +56,13 @@ def stockRecap(mydata):
     plt.ylabel('Stock prices')
     plt.xlabel('Days')
     plt.savefig('../img/stockRecap.png')
+    time.sleep(0.1)
 
-def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, pfpuntoAvgRet):
+def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol):
     portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
     plt.scatter( x = pfpuntoMaxRet['Volatility'], y = pfpuntoMaxRet['Return'], c = 'r')
     plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
-    plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
+    #plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
     plt.savefig('../img/frontier.png')
 
 
