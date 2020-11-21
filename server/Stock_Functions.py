@@ -2,7 +2,6 @@ from pandas_datareader import data as wb
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-import time
 
 # Select data from database
 def portfolio(tickers):
@@ -43,20 +42,20 @@ def pfCorr(mydata):
 
 # Plot trend
 def recap(x, y):
-    #mydata.plot(figsize=(16,8))
     plt.plot(x, y)
+    plt.annotate( str( int(y[-1]) ), (250, y[-1]) )
     plt.ylabel('Equity Line')
     plt.xlabel('Days')
     plt.savefig('../img/recap.png')
-    time.sleep(0.1)
+    plt.close('all')
 
 def stockRecap(mydata):
     mydata.plot(figsize=(16,8))
     plt.plot(mydata)
     plt.ylabel('Stock prices')
     plt.xlabel('Days')
-    plt.savefig('../img/stockRecap.png')
-    time.sleep(0.1)
+    plt.savefig('../img/stock.png')
+    plt.close('all')
 
 def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol):
     portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
@@ -64,6 +63,7 @@ def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol):
     plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
     #plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
     plt.savefig('../img/frontier.png')
+    plt.close('all')
 
 
 def returnsLog(mydata):

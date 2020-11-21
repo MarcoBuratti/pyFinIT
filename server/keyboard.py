@@ -1,6 +1,7 @@
 import telegram
 import sys
-sys.path.insert(1, '../Luca')
+import os
+from MC_Simulation import *
 from stock import Stock
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
@@ -25,28 +26,45 @@ class Keyboard:
     def analysisKeyboard(self, bot, chat_id):
         btn1 = KeyboardButton(text = 'Markowitz')
         btn2 = KeyboardButton(text = 'CAPM')
-        keyboard = [[btn1, btn2]]
+        btn3 = KeyboardButton(text = 'Back')
+        keyboard = [[btn1, btn2, btn3]]
         self.send_keyboard(bot, keyboard, chat_id, '<strong>Portfolio Analysis</strong>')        
 
     def sendRecap(self, bot, chat_id):
-        annual_returns, annualReturnW, volatility, tickers = stock.recapKey()
+        annualReturnW, volatility = stock.recapPortfolio()
+        self.sendImage(bot, chat_id, 'recap.png')
+        self.send_message(bot, chat_id, 'The annual <u>return</u> of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' \
+            + 'The <u>volatility</u> of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n')    
+        annual_returns, tickers = stock.recapStock()
         message = ''
         for i in range(len(annual_returns)):
-            message += ('The single annual return of the stock ' + tickers[i] + ' is ' + \
+            message += ('The single annual return of the stock ' + '<u>' +tickers[i] + '</u>' +' is ' + \
                 str( round(annual_returns.get(i)*100, 2) ) + '%\n' )
+        self.sendImage(bot, chat_id, 'stock.png')
         self.send_message(bot, chat_id, message)
-        self.sendImage(bot, chat_id, 'stockRecap.png')
-        self.send_message(bot, chat_id, 'The annual return of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' \
-            + 'The volatility of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n')
-        
+
     def sendMarkowitz(self, bot, chat_id):
-        pfpuntoMaxRet, pfpuntoMinVol = stock.markovitz()
-        #print(type(pfpuntoMaxRet.get('weig_list')))
-        #print(pfpuntoMaxRet.get('weig_list'))
+        pfpuntoMaxRet, pfpuntoMinVol, tickers = stock.markovitz()
         self.sendImage(bot, chat_id, 'frontier.png')
-        self.send_message(bot, chat_id, str(pfpuntoMaxRet)) 
-        self.send_message(bot, chat_id, str(pfpuntoMinVol))  
-        
+        message = 'The porfolio with <u>maximum return</u> is combosed by:\n'
+        for i in range( len(pfpuntoMaxRet.get('weig_list') ) ):
+            message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMaxRet.get('weig_list')[i]*100, 2) ) + '%\n')
+        message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMaxRet.get('Return')*100, 2) ) + '%\n' )  
+        message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMaxRet.get('Volatility')*100, 2) ) + '%\n' )     
+        self.send_message(bot, chat_id, message) 
+
+        message = 'The porfolio with <u>minimum volatility</u> is combosed by:\n'
+        for i in range( len(pfpuntoMinVol.get('weig_list') ) ):
+            message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMinVol.get('weig_list')[i]*100, 2) ) + '%\n')
+        message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMinVol.get('Return')*100, 2) ) + '%\n' )  
+        message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMinVol.get('Volatility')*100, 2) ) + '%\n' )     
+        self.send_message(bot, chat_id, message)
+ 
+    def sendForecast(self, bot, chat_id):
+        mydata = stock.getMydata()
+        MC_Simulation(mydata)
+        self.sendImage(bot, chat_id, 'mc_sim.png')
+
     def sendImage(self, bot, chat_id, img):
         image = '../img/' + img
         bot.sendPhoto(chat_id, photo=open(image, 'rb'))

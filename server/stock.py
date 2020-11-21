@@ -2,6 +2,7 @@ from pandas_datareader import data as wb
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
+import time
 
 from Stock_Functions import * 
 
@@ -30,15 +31,24 @@ class Stock:
         return self.tickers
 
     # Pesi delle singole azioni, ritorno annuale, ritorno annuale pesato e volatilità
-    def recapKey(self):
+    def recapPortfolio(self):
         annual_returns = pf_return(self.mydata)
         annualReturnW = weigthedReturn(annual_returns, self.weights)
         x, y = dailyReturn(self.mydata)
-        recap(x,y)
-        stockRecap(self.mydata)
         volatility = pfRisk(annual_returns, self.tickers)
-        #dailyReturn(self.mydata, self.weights)
-        return annual_returns, annualReturnW, volatility, self.tickers
+        #portafoglio totale genera recap
+        recap(x,y)
+        return   annualReturnW, volatility
+        
+
+    def recapStock(self):
+        ### singole azioni stock
+        annual_returns = pf_return(self.mydata)
+        annualReturnW = weigthedReturn(annual_returns, self.weights)
+        volatility = pfRisk(annual_returns, self.tickers)
+        stockRecap(self.mydata)
+        return annual_returns, self.tickers
+        
     
     #Markowitz Portfolio Optimization
     def markovitz(self):
@@ -83,7 +93,7 @@ class Stock:
         #plot efficient frontier 
         stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol)
 
-        return  pfpuntoMaxRet, pfpuntoMinVol
+        return  pfpuntoMaxRet, pfpuntoMinVol, self.tickers
     
     """
     def bestMarkPf(self, portfolios):

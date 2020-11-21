@@ -9,7 +9,7 @@ from yahoofinancials import YahooFinancials
 
 
 # Create a list of tickers and weights
-tickers = ['ACN', 'IBM', 'AIG', 'BLK','C','TRI','VGT','QQQJ','MA']
+tickers = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EUE.MI','MA', 'BABA']
 mydata = pd.DataFrame()
 for t in tickers:
     mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-1-1')['Adj Close']
@@ -29,17 +29,19 @@ pf_ret = dailyPercReturn(mydata)
 
 #Import SP500 data and calculate daily return
 def benchmark():
-    return wb.get_data_yahoo('^GSPC', start = '2015-01-01')["Adj Close"].pct_change()[1:]
+    return wb.get_data_yahoo('^GSPC', start = '2019-1-1')["Adj Close"].pct_change()[1:]
 
 SP500_ret = benchmark()
 
 
 #Build a regression model: pf_return vs SP500_return
 def capm(SP500_ret, pf_ret):
-    sns.regplot(SP500_ret, pf_ret)
-    plt.xlabel("SP500_return")
-    plt.ylabel("Pf_return")
+    sns.regplot(x=SP500_ret, y=pf_ret)
+    #plt.plot(SP500_ret, pf_ret)
+    plt.xlabel("Return of SP500")
+    plt.ylabel("Portfolio Return")
     plt.savefig('../img/capm.png')
+    plt.close('all')
     return stats.linregress(SP500_ret.values, pf_ret.values)[0:2]
 
 beta, alpha = capm(SP500_ret, pf_ret)

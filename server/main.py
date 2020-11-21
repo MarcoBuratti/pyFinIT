@@ -25,22 +25,23 @@ def main():
         key.initData()
         print('You can start to use your bot')
         last_update()
-        update_id = handler.getUpdateId() + 1
+        update_id = handler.getUpdateId()
         while True:
-            update = handler.getUpdateId()
+            update = handler.getUpdateId() + 1
             if  update == update_id:
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)
                     key.firstKeyboard(bot, handler.getChatId())
-                elif handler.getMessage() == '/back':
+                elif handler.getMessage() == 'Back':
                     key.firstKeyboard(bot, handler.getChatId())  
+                elif handler.getMessage() == 'Recap':
+                    key.sendRecap(bot, handler.getChatId())
                 elif handler.getMessage() == 'Analysis':
                     key.analysisKeyboard(bot, handler.getChatId())   
-                elif handler.getMessage() == 'Recap':
-                    key.sendImage(bot, handler.getChatId(), 'recap.png')
-                    key.sendRecap(bot, handler.getChatId())
                 elif handler.getMessage() == 'Markowitz':
-                    key.sendMarkowitz(bot, handler.getChatId())   
+                    key.sendMarkowitz(bot, handler.getChatId())
+                elif handler.getMessage() == 'Forecast':
+                    key.sendForecast(bot, handler.getChatId())   
                 else:
                     key.send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1
