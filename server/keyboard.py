@@ -2,7 +2,9 @@ import telegram
 import sys
 import os
 from MC_Simulation import *
+from capm import *
 from stock import Stock
+from yahoofinancials import YahooFinancials
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 stock = Stock()
@@ -51,24 +53,38 @@ class Keyboard:
             message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMaxRet.get('weig_list')[i]*100, 2) ) + '%\n')
         message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMaxRet.get('Return')*100, 2) ) + '%\n' )  
         message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMaxRet.get('Volatility')*100, 2) ) + '%\n' )     
+        yahoo_financials = YahooFinancials('^TNX')
+        yr_10 = yahoo_financials.get_current_price()/100
+        Sharpe =  (pfpuntoMaxRet.get('Return') -  yr_10)  / pfpuntoMaxRet.get('Volatility')
+        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(Sharpe, 2) ))
         self.send_message(bot, chat_id, message) 
 
         message = 'The porfolio with <u>minimum volatility</u> is combosed by:\n'
         for i in range( len(pfpuntoMinVol.get('weig_list') ) ):
             message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMinVol.get('weig_list')[i]*100, 2) ) + '%\n')
         message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMinVol.get('Return')*100, 2) ) + '%\n' )  
-        message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMinVol.get('Volatility')*100, 2) ) + '%\n' )     
+        message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMinVol.get('Volatility')*100, 2) ) + '%\n' )
+        Sharpe =  (pfpuntoMinVol.get('Return') -  yr_10)  / pfpuntoMinVol.get('Volatility')
+        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(Sharpe, 2) ))
         self.send_message(bot, chat_id, message)
  
     def sendForecast(self, bot, chat_id):
         mydata = stock.getMydata()
         MC_Simulation(mydata)
         self.sendImage(bot, chat_id, 'mc_sim.png')
+        message = 'Here there are five possible forecasts of the portfolio starting from today\n'
+        self.send_message(bot, chat_id, message)
+        
+    def sendCAPM(self, bot, chat_id):
+        mydata = stock.getMydata()
+        alpha, beta, sharpe = CAPM(mydata)
+        self.sendImage(bot, chat_id, 'capm.png')
+        message = ('Your portfolio excess return vaires by (beta) ' + str( round(beta, 2) )  + ' as the Market Excess Return Increases by one unit \nYour portfolio is overperfoming/underperforming the benchmark by (alpha)' + str( round(alpha, 2) ) + '\nYor porfolio has performed with this Sharpe ratio: ' + str(round(sharpe, 2)) )
+        self.send_message(bot, chat_id, message)
 
     def sendImage(self, bot, chat_id, img):
         image = '../img/' + img
         bot.sendPhoto(chat_id, photo=open(image, 'rb'))
-
 
     def send_keyboard(self, bot, keyboard, chat_id, text_message):
         bot.sendMessage(chat_id, text = text_message, parse_mode='HTML', reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard = True))

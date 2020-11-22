@@ -25,9 +25,9 @@ def main():
         key.initData()
         print('You can start to use your bot')
         last_update()
-        update_id = handler.getUpdateId()
+        update_id = handler.getUpdateId() + 1
         while True:
-            update = handler.getUpdateId() + 1
+            update = handler.getUpdateId()
             if  update == update_id:
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)
@@ -41,7 +41,9 @@ def main():
                 elif handler.getMessage() == 'Markowitz':
                     key.sendMarkowitz(bot, handler.getChatId())
                 elif handler.getMessage() == 'Forecast':
-                    key.sendForecast(bot, handler.getChatId())   
+                    key.sendForecast(bot, handler.getChatId())
+                elif handler.getMessage() == 'CAPM':
+                    key.sendCAPM(bot, handler.getChatId())     
                 else:
                     key.send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1

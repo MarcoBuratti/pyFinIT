@@ -1,5 +1,5 @@
-<strong>Welcome to <u>FintechBot</u></strong>
-FintechBot wants to help users to manage their investment portfolios 💶💵💷
+<strong>Welcome to <u>StockBot</u></strong>
+StockBot wants to help users to manage their investment portfolios 💶💵💷
 Within the Bot you will find numerous functions to keep track of investments, 
 assess risk, optimization and predict the future value of shares. 📈📉
 

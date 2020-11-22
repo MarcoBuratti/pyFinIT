@@ -15,7 +15,7 @@ class Stock:
 
     # Selezione dei ticker da mettere su file JSON
     def initData(self):
-        self.tickers = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EUE.MI','MA', 'BABA']
+        self.tickers = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EZJ','MA', 'BABA']
         self.weights = np.array([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1])
         #self.tickers = ['C', 'TRI', 'VGT', 'MA']
         #self.weights = np.array([0.25,0.25,0.25,0.25])

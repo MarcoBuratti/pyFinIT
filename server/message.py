@@ -15,7 +15,7 @@ class Message:
         self.update_id = response['update_id']
         self.first_name = response['message']['chat']['first_name']
         self.last_name = response['message']['chat']['last_name']
-        print('nome ', self.first_name, 'chat: ', self.chat_id, ' text: ', self.text, 'update_id: ', self.update_id)
+        #print('nome ', self.first_name, 'chat: ', self.chat_id, ' text: ', self.text, 'update_id: ', self.update_id)
 
     # Return update_id from last message
     def getUpdateId(self):
