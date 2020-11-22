@@ -31,28 +31,19 @@ def MC_Simulation(mydata):
     stdev = log_returns.std()
 
     #Check if drift is a pandas series and covert
+    #select values from drift
     l = pd.Series(drift)
     drift = l
-    drVal = drift.values
-
     l = pd.Series(stdev)
     stdev = l
-    stdVal = stdev.values
 
-    x = np.random.rand(10, 2)
-    norm.ppf(x)
-
-    #Expression corresponding to Z
-    #Array which uses the probabilities generated the random function and convert into distances 
-    #from mean 0 (in terms of st dev)
-    Z = norm.ppf(np.random.rand(10, 2))
 
     #Number of upcoming days for which we make forecasts
     t_intervals = 1850
     #Number of iterations of series stock price predictions
     iterations = 5
 
-    #COmpute future daily returns
+    #Compute future daily returns
     daily_returns = np.exp(drift.values + stdev.values * norm.ppf(np.random.rand(t_intervals, iterations)))
 
     #We need to create a price list
