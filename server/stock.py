@@ -36,9 +36,9 @@ class Stock:
         annualReturnW = weigthedReturn(annual_returns, self.weights)
         x, y = dailyReturn(self.mydata)
         volatility = pfRisk(annual_returns, self.tickers)
-        #portafoglio totale genera recap
+        #disegna grafico
         recap(x,y)
-        return   annualReturnW, volatility
+        return annualReturnW, volatility
         
 
     def recapStock(self):
@@ -66,17 +66,12 @@ class Stock:
         for x in range(30000):
             weights_m = np.random.random( num_assets )
             weights_m /= np.sum( weights_m )
-            #print('pesi2: ', weights_m)
             weig_list.append( weights_m )
-            #print('pesi3: ', weig_list)
             pf_returns.append(np.sum( np.dot(weights_m, appendPfRet) ) )
-            #print('pf_ret: ', pf_returns)
             pf_vol.append(np.sqrt(np.dot( weights_m.T, np.dot( covRetLog, weights_m ))))
-            #print('pf_vol: ', pf_vol)
 
 
         weig_list = [np.round(num, 4) for num in weig_list]
-        #print(weig_list)
         pf_returns = np.array(pf_returns)
         pf_vol = np.array(pf_vol)
 
@@ -86,19 +81,10 @@ class Stock:
 
         maxReturnPf = portfolios['Return'].argmax()
         minVolatilityPf = portfolios['Volatility'].argmin()
-        #avgReturnPf = portfolios['Return'].argmax()//3
         pfpuntoMaxRet = portfolios.iloc[maxReturnPf]
         pfpuntoMinVol  = portfolios.iloc[minVolatilityPf]
-        #pfpuntoAvgRet = portfolios.iloc[avgReturnPf]
         #plot efficient frontier 
         stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol)
 
         return  pfpuntoMaxRet, pfpuntoMinVol, self.tickers
     
-    """
-    def bestMarkPf(self, portfolios):
-        maxRet = portfolios['Return'].argmax()
-        minVol = portfolios['Volatility'].argmin()
-        avgRet = (portfolios['Return'].argmax()//3)
-        return maxRet, minVol, avgRet
-    """

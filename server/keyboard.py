@@ -77,9 +77,9 @@ class Keyboard:
         
     def sendCAPM(self, bot, chat_id):
         mydata = stock.getMydata()
-        alpha, beta, sharpe = CAPM(mydata)
+        alpha, beta, sharpe = CAPM(mydata, stock)
         self.sendImage(bot, chat_id, 'capm.png')
-        message = ('Your portfolio excess return vaires by (beta) ' + str( round(beta, 2) )  + ' as the Market Excess Return Increases by one unit \nYour portfolio is overperfoming/underperforming the benchmark by (alpha)' + str( round(alpha, 2) ) + '\nYor porfolio has performed with this Sharpe ratio: ' + str(round(sharpe, 2)) )
+        message = ('Your portfolio excess return vaires by (beta) ' + str( round(beta, 2) )  + ' as the Market Excess Return Increases by one unit \nYour portfolio is overperfoming/underperforming the benchmark by (alpha)' + str( round(alpha, 2) ) + '\nYour porfolio has performed with this Sharpe ratio: ' + str(round(sharpe, 2)) )
         self.send_message(bot, chat_id, message)
 
     def sendImage(self, bot, chat_id, img):

@@ -8,11 +8,12 @@ import seaborn as sns
 from yahoofinancials import YahooFinancials
 
 
-def CAPM(mydata):
+def CAPM(mydata, stock):
     const_weights = [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
     #Calculate stocks daily return
     # DA TENERE
-    #Calculate portfolio daily return    
+    #Calculate portfolio daily return 
+    # ritorna il valore percentuale tra n e n-1 
     ret_data = mydata.pct_change()[1:]
     pf_ret = (ret_data * const_weights).sum(axis = 1)
 
@@ -26,6 +27,7 @@ def CAPM(mydata):
     plt.ylabel("Portfolio Return")
     plt.savefig('../img/capm.png')
     plt.close('all')
+    #slope and inctercept of the fittest line
     beta, alpha = stats.linregress(SP500_ret.values, pf_ret.values)[0:2]
 
     # Import ten yield bonds
@@ -35,12 +37,8 @@ def CAPM(mydata):
     #Portfolio expected return
     mkt_risk_prem = 0.05
     Pf_exp_ret = yr_10 + beta * mkt_risk_prem
-
-    Sharpe = (0.4168 - yr_10) / (0.6841)
-    #print('Beta: ', beta)
-    #print('Alpha: ', alpha)
-    #print('Sharpe: ', Sharpe)
-    #print('Pf ecp: ', Pf_exp_ret)
-    #portfolio expected return, sharpe = indice del portafoglio
+    annualReturnW, volatility = stock.recapPortfolio()
+    annualReturnW /= 100
+    Sharpe = (annualReturnW - yr_10) / (volatility)
 
     return alpha, beta, Sharpe

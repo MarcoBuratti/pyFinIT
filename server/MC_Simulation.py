@@ -1,18 +1,3 @@
-#Predict stock prices
-#price (today) = price (yesterday)*e^r
-#where r is the log return (share price of today / share price of yesterday)
-
-#Brownian motion
-
-#DRIFT = (average return - 1/2*variance)
-#The drift is the expected dailyreturn of the stock
-
-#VOLATILITY: random variable = st.dev*Z(Rand(0;1))
-
-#Repeat this calculation 1000 times
-#Price(today) = price(yesterday)*e^((mean-1/2*variance) + st.dev * Z[Rand(0;1)])
-
-
 #Import libraries
 import numpy as np
 import pandas as pd
@@ -22,19 +7,6 @@ from scipy.stats import norm
 from IPython import get_ipython
 from Stock_Functions import *
 
-
-
-
-
-#Import data
-#ticker = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EUE.MI','MA', 'BABA']
-#mydata = pd.DataFrame()
-#mydata[ticker] = wb.DataReader(ticker, data_source = "yahoo", start = "2020-11-19")["Adj Close"]
-
-#for t in ticker:
-#    mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-11-19')['Adj Close']
-
-
 def MC_Simulation(mydata):
 
     daily = (mydata/ mydata.shift(1)).mean(axis = 1) - 1
@@ -43,21 +15,22 @@ def MC_Simulation(mydata):
     lenght = daily.size
     new_list=[] 
     j=0
+    #cumulated return
     for i in range(1, lenght):
         j+=daily.iloc[i]
         new_list.append(j)
     dailyPortfolio = [10000 + (x * 10000) for x in new_list]
 
     #Compute the mean of log returns
-    u = log_returns.mean()
+    avgReturn = log_returns.mean()
     #Compute the var of log returns
     var = log_returns.var()
     #Compute the drift component
-    drift = u - (0.5 * var)
+    drift = avgReturn - (0.5 * var)
     #Compute st dev
     stdev = log_returns.std()
 
-    #Check if drift is a pandas series
+    #Check if drift is a pandas series and covert
     l = pd.Series(drift)
     drift = l
     drVal = drift.values
@@ -94,7 +67,6 @@ def MC_Simulation(mydata):
     #Compute price list over the number of t_intervals
     for t in range (1, t_intervals):
         price_list[t] = price_list[t-1]*daily_returns[t]
-    #print(price_list[-1][0])
 
     #Plot 
     plt.figure(figsize=(10, 6))

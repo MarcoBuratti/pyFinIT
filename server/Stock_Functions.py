@@ -65,11 +65,6 @@ def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol):
     plt.savefig('../img/frontier.png')
     plt.close('all')
 
-
-def returnsLog(mydata):
-    return np.log(mydata / mydata.shift(1))
-
-
 #calculate a portfolio annual return
 def dailyReturn(mydata):
     daily = (mydata/ mydata.shift(1)).mean(axis = 1) - 1
@@ -78,8 +73,10 @@ def dailyReturn(mydata):
     day_list=[]
     i=0
     j=0
+    # Cumulated return
     for i in range(1, lenght):
         j+=daily.iloc[i]
+        #aggiungi elemento j in coda alla lista
         new_list.append(j)
         i+=1
         day_list.append(i)
