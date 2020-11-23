@@ -49,9 +49,11 @@ def recap(x, y):
     plt.savefig('../img/recap.png')
     plt.close('all')
 
-def stockRecap(mydata):
-    mydata.plot(figsize=(16,8))
+def stockRecap(mydata, tickers):
+    #mydata.plot(figsize=(16,8))
     plt.plot(mydata)
+    for t in tickers:
+        plt.annotate( str( t ), ('2019-11-19', mydata.get(t)[0]) )
     plt.ylabel('Stock prices')
     plt.xlabel('Days')
     plt.savefig('../img/stock.png')

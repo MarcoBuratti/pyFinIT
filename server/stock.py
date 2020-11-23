@@ -15,9 +15,11 @@ class Stock:
 
     # Selezione dei ticker da mettere su file JSON
     def initData(self):
-        self.tickers = ['ACN', 'IBM', 'AIG', 'BLK','TSLA','TRI','VGT','EZJ','MA', 'BABA']
-        self.weights = np.array([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1])
-        #self.tickers = ['C', 'TRI', 'VGT', 'MA']
+        #self.tickers = ['ACN', 'AMZN', 'AIG', 'BLK','TSLA','TRI','VGT','EZJ','MA', 'BABA']
+        #self.weights = np.array([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1])
+        self.tickers = ['ACN', 'TSLA', 'EZJ', 'BLK','IBM','VGT']
+        self.weights = np.array([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
+        #self.tickers = ['AMZN', 'TRI', 'VGT', 'TSLA']
         #self.weights = np.array([0.25,0.25,0.25,0.25])
         self.mydata = portfolio(self.tickers)
 
@@ -46,7 +48,7 @@ class Stock:
         annual_returns = pf_return(self.mydata)
         annualReturnW = weigthedReturn(annual_returns, self.weights)
         volatility = pfRisk(annual_returns, self.tickers)
-        stockRecap(self.mydata)
+        stockRecap(self.mydata, self.tickers)
         return annual_returns, self.tickers
         
     
@@ -63,7 +65,7 @@ class Stock:
         #generate a for loop which gives back 1000 pf weights
         #sum of these random number must be equal to 1(sum of pf assets)
         #w /= sum.(w) is equivalent to w = w / sum.(w)->w1/(w1+w2) + w2/(w1+w2..) + wn/(sum.wn)=1
-        for x in range(30000):
+        for x in range(10000):
             weights_m = np.random.random( num_assets )
             weights_m /= np.sum( weights_m )
             weig_list.append( weights_m )

@@ -8,14 +8,14 @@ import seaborn as sns
 from yahoofinancials import YahooFinancials
 
 
-def CAPM(mydata, stock):
-    const_weights = [0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1]
+def CAPM(mydata, stock, weights):
+
     #Calculate stocks daily return
     # DA TENERE
     #Calculate portfolio daily return 
     # ritorna il valore percentuale tra n e n-1 
     ret_data = mydata.pct_change()[1:]
-    pf_ret = (ret_data * const_weights).sum(axis = 1)
+    pf_ret = (ret_data * weights).sum(axis = 1)
 
     #Import SP500 data and calculate daily return
     SP500_ret = wb.get_data_yahoo('^GSPC', start = '2019-11-19')["Adj Close"].pct_change()[1:]

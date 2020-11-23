@@ -34,7 +34,7 @@ def main():
                     key.firstKeyboard(bot, handler.getChatId())
                 elif handler.getMessage() == 'Back':
                     key.firstKeyboard(bot, handler.getChatId())  
-                elif handler.getMessage() == 'Recap':
+                elif handler.getMessage() == 'Tracking':
                     key.sendRecap(bot, handler.getChatId())
                 elif handler.getMessage() == 'Analysis':
                     key.analysisKeyboard(bot, handler.getChatId())   
