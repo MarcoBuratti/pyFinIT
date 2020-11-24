@@ -31,6 +31,7 @@ def main():
         while True:
             update = handler.getUpdateId()
             if  update == update_id:
+                handler.move()
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)
                     key.firstKeyboard(bot, handler.getChatId())
@@ -51,7 +52,6 @@ def main():
                 else:
                     key.send_message(bot, handler.getChatId(), "Sorry, this function is not available yet!")
                 update_id += 1
-                handler.move()
             last_update()
     except KeyboardInterrupt:
         pass

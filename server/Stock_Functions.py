@@ -61,8 +61,10 @@ def stockRecap(mydata, tickers):
 
 def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, sharpeMax):
     portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
+    plt.scatter(portfolios['Volatility'], portfolios['Return'], c=portfolios['sharpe'], cmap='viridis')
+    plt.colorbar(label='Sharpe Ratio')
     plt.scatter( x = pfpuntoMaxRet['Volatility'], y = pfpuntoMaxRet['Return'], c = 'r')
-    plt.scatter( x = sharpeMax['Volatility'], y = sharpeMax['Return'], c = 'y')
+    plt.scatter( x = sharpeMax['Volatility'], y = sharpeMax['Return'], c = 'r')
     plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
     plt.savefig('../img/frontier.png')
     plt.close('all')

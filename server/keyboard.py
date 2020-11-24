@@ -82,11 +82,11 @@ class Keyboard:
         mydata = stock.getMydata()
         MC_Simulation(mydata)
         self.sendImage(bot, chat_id, 'mc_sim.png')
-        message = 'Here there are five possible annually forecasts of the portfolio starting from today with a capital amount of 10k $\n'
+        message = 'Here there are five possible annually forecasts of the portfolio starting from one year ago with a capital amount of 10k $\n'
         self.send_message(bot, chat_id, message)
         
     def sendCAPM(self, bot, chat_id):
-        pfpuntoMaxRet, pfpuntoMinVol, tickers = stock.markovitz()
+        pfpuntoMaxRet, pfpuntoMinVol, pfpuntoSharpe, tickers = stock.markovitz()
         weights = pfpuntoMinVol.get('weig_list')
         mydata = stock.getMydata()
         #weights = stock.getWeights()

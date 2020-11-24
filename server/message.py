@@ -36,4 +36,4 @@ class Message:
         return self.last_name
 
     def move(self):
-        print('User: ', self.getName(), ' ', self.getSurname(), ' has request this function: ', self.getMessage())
+        print('User: ', self.getName(), self.getSurname(), 'has request this function: ', self.getMessage())
