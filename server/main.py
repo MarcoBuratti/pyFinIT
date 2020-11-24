@@ -11,6 +11,8 @@ TOKEN = token.read()
 bot = telegram.Bot(TOKEN)
 f = open("../config/welcome.txt", "r")
 welcome = f.read()
+f = open("../config/help.txt", "r")
+helper = f.read()
 key = Keyboard()
 
 # Push into que last update recived from user
@@ -32,6 +34,8 @@ def main():
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)
                     key.firstKeyboard(bot, handler.getChatId())
+                elif handler.getMessage() == '/help':
+                    key.send_message(bot, handler.getChatId(), helper)
                 elif handler.getMessage() == 'Back':
                     key.firstKeyboard(bot, handler.getChatId())  
                 elif handler.getMessage() == 'Tracking':

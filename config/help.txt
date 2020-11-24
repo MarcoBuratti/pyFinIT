@@ -1,0 +1,6 @@
+StockBOT has three main functions:
+- <u>Tracking</u>, says how well the individual stocks and portfolio performed in the past year
+- <u>Forecast</u>, try to make a forecast for the next five years of your portfolio
+- <u>Analysis</u>, through the CAPM and Markowitz tries to give the measure of the best portfolio possible
+
+For further information please contact us by email at: <strong>nome.congnome@mip.polimi.it</strong>
