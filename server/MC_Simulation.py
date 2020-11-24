@@ -39,7 +39,7 @@ def MC_Simulation(mydata):
 
 
     #Number of upcoming days for which we make forecasts
-    t_intervals = 1850
+    t_intervals = 750
     #Number of iterations of series stock price predictions
     iterations = 5
 
@@ -65,10 +65,9 @@ def MC_Simulation(mydata):
     plt.ylabel("Return in $ of portfolio")
     plt.xlabel("Days")
     plt.annotate( str(round(price_list[0][0], 2) ), (0, price_list[0][0]) )
-    plt.annotate( str(round(price_list[-1][0], 2) ), (1750, price_list[-1][0]) )
-    plt.annotate( str(round(price_list[-1][1], 2) ), (1750, price_list[-1][1]) )
-    plt.annotate( str(round(price_list[-1][2], 2) ), (1750, price_list[-1][2]) )
-    plt.annotate( str(round(price_list[-1][3], 2) ), (1750, price_list[-1][3]) )
+    plt.annotate( str(round(price_list[-1][0], 2) ), (750, price_list[-1][0]) )
+    plt.annotate( str(round(price_list[-1][1], 2) ), (750, price_list[-1][1]) )
+    plt.annotate( str(round(price_list[-1][2], 2) ), (750, price_list[-1][2]) )
+    plt.annotate( str(round(price_list[-1][3], 2) ), (750, price_list[-1][3]) )
     plt.savefig('../img/mc_sim.png')
     plt.close('all')
-

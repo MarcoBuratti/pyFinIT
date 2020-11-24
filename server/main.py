@@ -34,7 +34,7 @@ def main():
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)
                     key.firstKeyboard(bot, handler.getChatId())
-                elif handler.getMessage() == '/help':
+                elif handler.getMessage() == 'Help':
                     key.send_message(bot, handler.getChatId(), helper)
                 elif handler.getMessage() == 'Back':
                     key.firstKeyboard(bot, handler.getChatId())  

@@ -1,6 +1,13 @@
 StockBOT has three main functions:
-- <u>Tracking</u>, says how well the individual stocks and portfolio performed in the past year
-- <u>Forecast</u>, try to make a forecast for the next five years of your portfolio
-- <u>Analysis</u>, through the CAPM and Markowitz tries to give the measure of the best portfolio possible
+- <u>Tracking</u>, Evaluate individual stocks and portfolio performance over the past year
+- <u>Forecast</u>, Generates portfolio forecasts for next five years
+- <u>Analysis</u>, Through the CAPM and Markowitz tries to give the measure of the best portfolio allocation
+
+<strong>Glossary</strong>
+<u>Alpha</u>: shows how well the portfolio has performed in comparison to the benchmark (S&P500)
+<u>Beta</u>: is a measure of the volatility (systematic risk) of a security/portfolio compared to the market
+<u>Sharpe</u>: measures the performance of investments compared to risk free asset
+<u>Volatility</u>: is a statistical measure of the dispersion of returns
+
 
 For further information please contact us by email at: <strong>nome.congnome@mip.polimi.it</strong>

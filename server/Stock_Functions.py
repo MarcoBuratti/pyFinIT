@@ -59,11 +59,11 @@ def stockRecap(mydata, tickers):
     plt.savefig('../img/stock.png')
     plt.close('all')
 
-def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol):
+def stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, sharpeMax):
     portfolios.plot( x = 'Volatility', y = 'Return', kind = 'scatter', figsize = (10,6) )
     plt.scatter( x = pfpuntoMaxRet['Volatility'], y = pfpuntoMaxRet['Return'], c = 'r')
+    plt.scatter( x = sharpeMax['Volatility'], y = sharpeMax['Return'], c = 'y')
     plt.scatter( x = pfpuntoMinVol['Volatility'], y = pfpuntoMinVol['Return'], c = 'r')
-    #plt.scatter( x = pfpuntoAvgRet['Volatility'], y = pfpuntoAvgRet['Return'], c = 'r')
     plt.savefig('../img/frontier.png')
     plt.close('all')
 

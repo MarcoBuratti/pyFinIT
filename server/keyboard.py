@@ -22,7 +22,8 @@ class Keyboard:
         btn1 = KeyboardButton(text = 'Tracking')
         btn2 = KeyboardButton(text = 'Analysis')
         btn3 = KeyboardButton(text = 'Forecast')
-        keyboard = [[btn1, btn2, btn3]]
+        btn4 = KeyboardButton(text = 'Help')
+        keyboard = [[btn1, btn2, btn3, btn4]]
         self.send_keyboard(bot, keyboard, chat_id, '<strong>Menu</strong>')
 
     def analysisKeyboard(self, bot, chat_id):
@@ -76,8 +77,10 @@ class Keyboard:
         self.send_message(bot, chat_id, message)
         
     def sendCAPM(self, bot, chat_id):
+        pfpuntoMaxRet, pfpuntoMinVol, tickers = stock.markovitz()
+        weights = pfpuntoMinVol.get('weig_list')
         mydata = stock.getMydata()
-        weights = stock.getWeights()
+        #weights = stock.getWeights()
         alpha, beta, sharpe = CAPM(mydata, stock, weights)
         self.sendImage(bot, chat_id, 'capm.png')
         message = ('Your portfolio excess return vaires by (beta) ' + str( round(beta, 2) )  + \
