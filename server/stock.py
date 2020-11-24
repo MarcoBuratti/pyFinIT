@@ -47,7 +47,6 @@ class Stock:
     def recapStock(self):
         ### singole azioni stock
         annual_returns = pf_return(self.mydata)
-        annualReturnW = weigthedReturn(annual_returns, self.weights)
         volatility = pfRisk(annual_returns, self.tickers)
         stockRecap(self.mydata, self.tickers)
         return annual_returns, self.tickers
@@ -69,15 +68,15 @@ class Stock:
         #generate a for loop which gives back 1000 pf weights
         #sum of these random number must be equal to 1(sum of pf assets)
         #w /= sum.(w) is equivalent to w = w / sum.(w)->w1/(w1+w2) + w2/(w1+w2..) + wn/(sum.wn)=1
-        for x in range(10000):
+        for x in range(5000):
             weights_m = np.random.random( num_assets )
             weights_m /= np.sum( weights_m )
             weig_list.append( weights_m )
-            ritorni = np.sum( np.dot(weights_m, appendPfRet) )
-            volatilita = np.sqrt(np.dot( weights_m.T, np.dot( covRetLog, weights_m )))
-            pf_returns.append( ritorni )
-            pf_vol.append( volatilita )
-            sharpe_list.append( (ritorni - yr_10) / volatilita )
+            singleReturn = np.sum( np.dot(weights_m, appendPfRet) )
+            singleVol = np.sqrt(np.dot( weights_m.T, np.dot( covRetLog, weights_m )))
+            pf_returns.append( singleReturn )
+            pf_vol.append( singleVol )
+            sharpe_list.append( (singleReturn - yr_10) / singleVol )
         
         weig_list = [np.round(num, 4) for num in weig_list]
         pf_returns = np.array(pf_returns)
@@ -95,5 +94,5 @@ class Stock:
         #plot efficient frontier 
         stockMarkovitz(portfolios, pfpuntoMaxRet, pfpuntoMinVol, pfpuntoSharpe)
 
-        return  pfpuntoMaxRet, pfpuntoMinVol, self.tickers
+        return  pfpuntoMaxRet, pfpuntoMinVol, pfpuntoSharpe, self.tickers
     

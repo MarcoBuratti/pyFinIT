@@ -31,7 +31,7 @@ def MC_Simulation(mydata):
     stdev = log_returns.std()
 
     #Check if drift is a pandas series and covert
-    #select values from drift
+    #cast of dataset to pandas series
     l = pd.Series(drift)
     drift = l
     l = pd.Series(stdev)
