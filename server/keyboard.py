@@ -80,9 +80,12 @@ class Keyboard:
  
     def sendForecast(self, bot, chat_id):
         mydata = stock.getMydata()
-        MC_Simulation(mydata)
+        avg, maxVal, minVal, stdVal = MC_Simulation(mydata)
         self.sendImage(bot, chat_id, 'mc_sim.png')
         message = 'Here there are five possible annually forecasts of the portfolio starting from one year ago with a capital amount of 10k $\n'
+        message += ('\nThe <u>average</u> value of the prevision is: ' + str(avg) + '$')
+        message += ('\nThe <u>maximum</u> value of the prevision is: ' + str(maxVal) + '$')
+        message += ('\nThe <u>minimum</u> value of the prevision is: ' + str(minVal) + '$')
         self.send_message(bot, chat_id, message)
         
     def sendCAPM(self, bot, chat_id):

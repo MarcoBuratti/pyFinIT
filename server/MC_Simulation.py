@@ -22,11 +22,11 @@ def MC_Simulation(mydata):
     dailyPortfolio = [10000 + (x * 10000) for x in new_list]
 
     #Compute the mean of log returns
-    avgReturn = log_returns.mean()
+    meanRet = log_returns.mean()
     #Compute the var of log returns
-    var = log_returns.var()
+    variance = log_returns.var()
     #Compute the drift component
-    drift = avgReturn - (0.5 * var)
+    drift = meanRet - (0.5 * variance)
     #Compute st dev
     stdev = log_returns.std()
 
@@ -39,24 +39,24 @@ def MC_Simulation(mydata):
 
 
     #Number of upcoming days for which we make forecasts
-    t_intervals = 750
+    time_range = 750
     #Number of iterations of series stock price predictions
     iterations = 5
 
     #Compute future daily returns
-    daily_returns = np.exp(drift.values + stdev.values * norm.ppf(np.random.rand(t_intervals, iterations)))
+    daily_returns = np.exp(drift.values + stdev.values * norm.ppf(np.random.rand(time_range, iterations)))
 
     #We need to create a price list
     #Each price must be equal to: St = S0 * daily_return
-    S0 = dailyPortfolio[-1]
+    Y0 = dailyPortfolio[-1]
 
     #Obtain an array with the same number of elements  of previous matrix
     price_list = np.zeros_like(daily_returns)
 
     #S0 would be the new initial price for each of the ten iterations
-    price_list[0] = S0
+    price_list[0] = Y0
     #Compute price list over the number of t_intervals
-    for t in range (1, t_intervals):
+    for t in range (1, time_range):
         price_list[t] = price_list[t-1]*daily_returns[t]
 
     #Plot 
@@ -69,5 +69,19 @@ def MC_Simulation(mydata):
     plt.annotate( str(round(price_list[-1][1], 2) ), (750, price_list[-1][1]) )
     plt.annotate( str(round(price_list[-1][2], 2) ), (750, price_list[-1][2]) )
     plt.annotate( str(round(price_list[-1][3], 2) ), (750, price_list[-1][3]) )
+    plt.annotate( str(round(price_list[-1][4], 2) ), (750, price_list[-1][4]) )
     plt.savefig('../img/mc_sim.png')
     plt.close('all')
+
+    tot = 0
+    lastValue = []
+    for i in range(iterations):
+        tot += price_list[-1][i]
+        lastValue.append(price_list[-1][i])
+
+    avg = tot / iterations
+    maxVal = max(lastValue)
+    minVal = min(lastValue)
+    stdVal = np.std(lastValue)
+
+    return round(avg, 2), round(maxVal, 2), round(minVal, 2), round(stdVal, 2)

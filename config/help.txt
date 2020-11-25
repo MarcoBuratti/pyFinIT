@@ -1,4 +1,4 @@
-StockBOT has three main functions:
+<strong>StockBOT</strong> has three main functions:
 - <u>Tracking</u>, Evaluate individual stocks and portfolio performance over the past year
 - <u>Forecast</u>, Generates portfolio forecasts for next five years
 - <u>Analysis</u>, Through the CAPM and Markowitz tries to give the measure of the best portfolio allocation
@@ -10,4 +10,4 @@ StockBOT has three main functions:
 <u>Volatility</u>: is a statistical measure of the dispersion of returns
 
 
-For further information please contact us by email at: <strong>nome.congnome@mip.polimi.it</strong>
+For further information please contact us by email at: <strong>name.surname@mip.polimi.it</strong>
