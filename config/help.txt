@@ -10,4 +10,4 @@
 <u>Volatility</u>: is a statistical measure of the dispersion of returns
 
 
-For further information please contact us by email at: <strong>name.surname@mip.polimi.it</strong>
+For further information please contact us by email at: <strong>stock.bot@mip.polimi.it</strong>

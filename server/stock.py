@@ -13,6 +13,8 @@ class Stock:
         self.mydata = None
         self.tickers = None
         self.weights = None
+        self.sp500 = None
+        self.yr_10 = None
 
     # Selezione dei ticker da mettere su file JSON
     def initData(self):
@@ -23,6 +25,7 @@ class Stock:
         #self.tickers = ['AMZN', 'TRI', 'VGT', 'TSLA']
         #self.weights = np.array([0.25,0.25,0.25,0.25])
         self.mydata = portfolio(self.tickers)
+        self.sp500, self.yr_10 = SP500()
 
     def getMydata(self):
         return self.mydata
@@ -33,6 +36,12 @@ class Stock:
     def getTickers(self):
         return self.tickers
 
+    def getSP500(self):
+        return self.sp500
+
+    def getYR10(self):
+        return self.yr_10
+
     # Pesi delle singole azioni, ritorno annuale, ritorno annuale pesato e volatilità
     def recapPortfolio(self):
         annual_returns = pf_return(self.mydata)
@@ -41,7 +50,7 @@ class Stock:
         volatility = pfRisk(annual_returns, self.tickers)
         #disegna grafico
         recap(x,y)
-        return annualReturnW, volatility
+        return annualReturnW, volatility, y[-1]
         
 
     def recapStock(self):
@@ -63,8 +72,6 @@ class Stock:
         pf_vol= []
         weig_list = []
         sharpe_list = []
-        yahoo_financials = YahooFinancials('^TNX')
-        yr_10 = yahoo_financials.get_current_price()/100
         #generate a for loop which gives back 1000 pf weights
         #sum of these random number must be equal to 1(sum of pf assets)
         #w /= sum.(w) is equivalent to w = w / sum.(w)->w1/(w1+w2) + w2/(w1+w2..) + wn/(sum.wn)=1
@@ -76,7 +83,7 @@ class Stock:
             singleVol = np.sqrt(np.dot( weights_m.T, np.dot( covRetLog, weights_m )))
             pf_returns.append( singleReturn )
             pf_vol.append( singleVol )
-            sharpe_list.append( (singleReturn - yr_10) / singleVol )
+            sharpe_list.append( (singleReturn - self.yr_10) / singleVol )
         
         weig_list = [np.round(num, 4) for num in weig_list]
         pf_returns = np.array(pf_returns)

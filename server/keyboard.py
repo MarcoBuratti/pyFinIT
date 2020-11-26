@@ -4,7 +4,6 @@ import os
 from MC_Simulation import *
 from capm import *
 from stock import Stock
-from yahoofinancials import YahooFinancials
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
 stock = Stock()
@@ -34,10 +33,11 @@ class Keyboard:
         self.send_keyboard(bot, keyboard, chat_id, '<strong>Portfolio Analysis</strong>')        
 
     def sendRecap(self, bot, chat_id):
-        annualReturnW, volatility = stock.recapPortfolio()
+        annualReturnW, volatility, amount = stock.recapPortfolio()
         self.sendImage(bot, chat_id, 'recap.png')
-        self.send_message(bot, chat_id, 'The annual <u>return</u> of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' \
-            + 'The <u>volatility</u> of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n')    
+        message = ''
+        message += ('The annual <u>return</u> of the portfolio is: ' + str(round(annualReturnW, 3)) + '%\n' + 'The <u>volatility</u> of the porfolio is: ' + str( round( (volatility*100), 2) ) + '%\n' + 'The <u>amount</u> of your portfolio is: ' + str( round(amount, 2) ) + '$\n')
+        self.send_message(bot, chat_id, message)    
         annual_returns, tickers = stock.recapStock()
         message = ''
         for i in range(len(annual_returns)):
@@ -54,10 +54,7 @@ class Keyboard:
             message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMaxRet.get('weig_list')[i]*100, 2) ) + '%\n')
         message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMaxRet.get('Return')*100, 2) ) + '%\n' )  
         message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMaxRet.get('Volatility')*100, 2) ) + '%\n' )     
-        yahoo_financials = YahooFinancials('^TNX')
-        yr_10 = yahoo_financials.get_current_price()/100
-        Sharpe =  (pfpuntoMaxRet.get('Return') -  yr_10)  / pfpuntoMaxRet.get('Volatility')
-        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(Sharpe, 2) ))
+        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(pfpuntoMaxRet.get('sharpe'), 2) ))
         self.send_message(bot, chat_id, message) 
 
         message = 'The porfolio with <u>minimum volatility</u> is combosed by:\n'
@@ -65,8 +62,7 @@ class Keyboard:
             message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoMinVol.get('weig_list')[i]*100, 2) ) + '%\n')
         message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoMinVol.get('Return')*100, 2) ) + '%\n' )  
         message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoMinVol.get('Volatility')*100, 2) ) + '%\n' )
-        Sharpe =  (pfpuntoMinVol.get('Return') -  yr_10)  / pfpuntoMinVol.get('Volatility')
-        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(Sharpe, 2) ))
+        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(pfpuntoMinVol.get('sharpe'), 2) ))
         self.send_message(bot, chat_id, message)
 
         message = 'The porfolio with <u>highest Sharpe ratio</u> is combosed by:\n'
@@ -74,8 +70,7 @@ class Keyboard:
             message += ('Stock ticker: ' + tickers[i] + ' ' + str( round(pfpuntoSharpe.get('weig_list')[i]*100, 2) ) + '%\n')
         message +=  ('\n<strong>Return:</strong> ' + str( round( pfpuntoSharpe.get('Return')*100, 2) ) + '%\n' )  
         message +=  ('<strong>Volatility:</strong> ' + str( round( pfpuntoSharpe.get('Volatility')*100, 2) ) + '%\n' )
-        Sharpe =  (pfpuntoSharpe.get('Return') -  yr_10)  / pfpuntoSharpe.get('Volatility')
-        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(Sharpe, 2) ))
+        message += ('<strong>Sharpe ratio is:</strong> ' + str( round(pfpuntoSharpe.get('sharpe'), 2) ))
         self.send_message(bot, chat_id, message)
  
     def sendForecast(self, bot, chat_id):
@@ -92,8 +87,10 @@ class Keyboard:
         pfpuntoMaxRet, pfpuntoMinVol, pfpuntoSharpe, tickers = stock.markovitz()
         weights = pfpuntoMinVol.get('weig_list')
         mydata = stock.getMydata()
+        SP500_ret = stock.getSP500()
+        yr_10 = stock.getYR10()
         #weights = stock.getWeights()
-        alpha, beta, sharpe = CAPM(mydata, stock, weights)
+        alpha, beta, sharpe = CAPM(mydata, stock, weights, SP500_ret, yr_10)
         self.sendImage(bot, chat_id, 'capm.png')
         message = ('Your portfolio excess return vaires by (beta) ' + str( round(beta, 2) )  + ' as the Market Excess Return Increases by one unit \nYour portfolio is overperfoming/underperforming the benchmark by (alpha)' + str( round(alpha, 2) ) + '\nYour porfolio has performed with this Sharpe ratio: ' + str(round(sharpe, 2)) )
         self.send_message(bot, chat_id, message)

@@ -30,7 +30,7 @@ def main():
         update_id = handler.getUpdateId() + 1
         while True:
             update = handler.getUpdateId()
-            if  update == update_id:
+            if  update >= update_id:
                 handler.move()
                 if handler.getMessage() == '/start':
                     key.send_message(bot, handler.getChatId(), welcome)

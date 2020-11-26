@@ -1,4 +1,5 @@
 from pandas_datareader import data as wb
+from yahoofinancials import YahooFinancials
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -11,6 +12,12 @@ def portfolio(tickers):
         mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-11-19')['Adj Close']
     return mydata    
     
+def SP500():
+    SP500_ret = wb.get_data_yahoo('^GSPC', start = '2019-11-19')["Adj Close"].pct_change()[1:]
+    yahoo_financials = YahooFinancials('^TNX')
+    yr_10 = yahoo_financials.get_current_price()/100  
+    return SP500_ret, yr_10
+      
 #calculate a portfolio annual return
 def pf_return(mydata):
     returns = (mydata/ mydata.shift(1)) -1

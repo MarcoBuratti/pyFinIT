@@ -4,5 +4,4 @@ Within the Bot you will find numerous functions to keep track of investments,
 assess risk, optimization and predict the future value of shares. 📈📉
 
 <u>To navigate use the keyboard with shortcuts.</u>
-If you need additional functions you can use them:
-/help Ask for help to the Bot 🆘
+If you need additional information you can ask to the Bot for help with button Help 🆘

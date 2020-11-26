@@ -5,20 +5,16 @@ import matplotlib.pyplot as plt
 import pandas_datareader as wb
 from scipy import stats
 import seaborn as sns
-from yahoofinancials import YahooFinancials
 
 
-def CAPM(mydata, stock, weights):
-
+def CAPM(mydata, stock, weights, SP500_ret, yr_10):
+    
     #Calculate stocks daily return
     # DA TENERE
     #Calculate portfolio daily return 
     # ritorna il valore percentuale tra n e n-1 
     ret_data = mydata.pct_change()[1:]
     pf_ret = (ret_data * weights).sum(axis = 1)
-
-    #Import SP500 data and calculate daily return
-    SP500_ret = wb.get_data_yahoo('^GSPC', start = '2019-11-19')["Adj Close"].pct_change()[1:]
 
     #Build a regression model: pf_return vs SP500_return
     sns.regplot(x=SP500_ret, y=pf_ret)
@@ -31,13 +27,12 @@ def CAPM(mydata, stock, weights):
     beta, alpha = stats.linregress(SP500_ret.values, pf_ret.values)[0:2]
 
     # Import ten yield bonds
-    yahoo_financials = YahooFinancials('^TNX')
-    yr_10 = yahoo_financials.get_current_price()/100
+
 
     #Portfolio expected return
     mkt_risk_prem = 0.05
     Pf_exp_ret = yr_10 + beta * mkt_risk_prem
-    annualReturnW, volatility = stock.recapPortfolio()
+    annualReturnW, volatility, amount = stock.recapPortfolio()
     annualReturnW /= 100
     Sharpe = (annualReturnW - yr_10) / (volatility)
 
