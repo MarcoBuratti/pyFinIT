@@ -72,8 +72,8 @@ class Stock:
         pf_vol= []
         weig_list = []
         sharpe_list = []
-        #generate a for loop which gives back 1000 pf weights
-        #sum of these random number must be equal to 1(sum of pf assets)
+        
+        #generate a for loop which gives back 5000 pf weights
         #w /= sum.(w) is equivalent to w = w / sum.(w)->w1/(w1+w2) + w2/(w1+w2..) + wn/(sum.wn)=1
         for x in range(5000):
             weights_m = np.random.random( num_assets )
@@ -91,6 +91,7 @@ class Stock:
 
         #create a dataframe containings three features
         portfolios = pd.DataFrame({'Return': pf_returns, 'Volatility': pf_vol, 'weig_list': weig_list, 'sharpe': sharpe_list})
+        
         # Find our 3 best porfolios
         maxReturnPf = portfolios['Return'].argmax()
         minVolatilityPf = portfolios['Volatility'].argmin()

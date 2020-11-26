@@ -26,9 +26,6 @@ def CAPM(mydata, stock, weights, SP500_ret, yr_10):
     #slope and inctercept of the fittest line
     beta, alpha = stats.linregress(SP500_ret.values, pf_ret.values)[0:2]
 
-    # Import ten yield bonds
-
-
     #Portfolio expected return
     mkt_risk_prem = 0.05
     Pf_exp_ret = yr_10 + beta * mkt_risk_prem
