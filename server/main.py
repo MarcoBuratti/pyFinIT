@@ -21,7 +21,7 @@ def last_update():
     last = len(response) - 1
     handler.setMessage(response[last])
 
-def main():
+def server():
     #update_id = last_update() + 1
     try:
         key.initData()
@@ -57,4 +57,4 @@ def main():
         pass
     
 
-main()
+server()
