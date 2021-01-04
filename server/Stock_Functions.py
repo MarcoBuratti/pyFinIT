@@ -9,7 +9,7 @@ def portfolio(tickers):
     print('Downloading data....')
     mydata = pd.DataFrame()
     for t in tickers:
-        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2019-11-19')['Adj Close']
+        mydata[t]= wb.DataReader(t,data_source='yahoo', start='2014-01-01', end='2016-12-30')['Adj Close']
     return mydata    
     
 def SP500():

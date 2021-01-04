@@ -22,8 +22,8 @@ class Stock:
         #self.weights = np.array([0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1])
         self.tickers = ['ACN', 'TSLA', 'EZJ', 'BLK','IBM','VGT']
         self.weights = np.array([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
-        #self.tickers = ['AMZN', 'TRI', 'VGT', 'TSLA']
-        #self.weights = np.array([0.25,0.25,0.25,0.25])
+        #self.tickers = ['FCAU', 'HSBC', 'JUVE.MI', 'FB', 'AAPL', 'AMZN']
+        #self.weights = np.array([1/6, 1/6, 1/6, 1/6, 1/6, 1/6])
         self.mydata = portfolio(self.tickers)
         self.sp500, self.yr_10 = SP500()
 
